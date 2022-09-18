@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление пользователя</title>
+</head>
+<body>
+
+<p>Добавьте нового пользователя</p>
+
+<form th:method="POST" th:action="@{/customer/new}" th:object="${customer}">
+    <label for="name">Введите имя пользователя:</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <br/>
+    <input type="submit" value="Выбрать"/>
+</form>
+</body>
+</html>

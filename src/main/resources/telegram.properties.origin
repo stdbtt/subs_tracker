@@ -1,0 +1,3 @@
+telegram.url.bot_token=
+telegram.url.api.address=https://api.telegram.org
+telegram.url.api.method=/getChatMemberCount?chat_id=

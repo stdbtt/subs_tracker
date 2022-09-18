@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание отслеживания</title>
+</head>
+<body>
+<h4>Создание отслеживания</h4>
+<form th:method="POST" th:action="@{/trackingConfig/new}">
+    <label for="channel_name">Введите название канала:</label>
+    <input type="text" id="channel_name" th:value="${channel.name}" name="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('${channel.name}')}" th:errors="*{channel.name}"></div>
+    <br/>
+    <label for="trackInterval">Введите интервал проверки количества подписчиков:</label>
+    <input type="text" id="trackInterval" th:value="${trackingConfig.trackInterval}" name="trackInterval">
+    <label>
+        <select th:value="${trackingConfig.timeUnit}" name="timeUnit">
+            <option th:each="time_unit: ${time_units}" th:value="${time_unit.toString()}"
+                    th:text="${time_unit.getName()}"></option>
+        </select>
+    </label>
+    <div style="color:red" th:if="${#fields.hasErrors('${trackingConfig.trackInterval}')}" th:errors="*{trackingConfig.trackInterval}"></div>
+    <br/>
+    <input type="submit" value="Создать"/>
+</form>
+</body>
+</html>

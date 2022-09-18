@@ -1,0 +1,10 @@
+target/
+
+src/main/resources/hibernate.properties
+src/main/resources/telegram.properties
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

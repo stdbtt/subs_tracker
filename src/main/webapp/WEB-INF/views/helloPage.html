@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор пользователя</title>
+</head>
+<body>
+
+<h4>Выберите пользователя для которого вы хотите посмотреть список отслеживаний.</h4>
+
+<form th:method="POST" th:action="@{/helloPage}" th:object="${customer}">
+    <label for="name">Введите имя пользователя:</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <br/>
+    <input type="submit" value="Выбрать"/>
+</form>
+<br/>
+<a th:href="@{/customer/new}">Добавить пользователя</a>
+</body>
+</html>

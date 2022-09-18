@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор отслеживания</title>
+</head>
+<body>
+<h4>Выберите канал по которому хотите увидеть статистику</h4>
+<div th:if="${trackingConfigs.isEmpty()}">
+    <span>У вас нет каналов которые вы отслеживаете!</span>
+</div>
+<div th:if="${!trackingConfigs.isEmpty()}">
+    <form th:method="POST" th:action="@{/trackingLap/selectStatsParameters}">
+        <label for="config">Выберите отслеживаемый канал:</label>
+        <select th:object="${trackingConfig}" th:field="*{trackingConfigId}" id="config">
+            <option th:each="trackingConfig: ${trackingConfigs}" th:value="${trackingConfig.getTrackingConfigId()}"
+                    th:text="${trackingConfig.getChannelDTO().getName()}"></option>
+        </select>
+        <br/>
+        <label for="start_time">Выберите период за который вы хотите увидеть статистику: c </label>
+        <input type="datetime-local" id="start_time" name="start_time">
+        <label for="end_time"> , по </label>
+        <input type="datetime-local" id="end_time" name="end_time">
+        <br/>
+        <input type="submit" value="Выбрать"/>
+    </form>
+</div>
+<br/>
+<a th:href="@{/trackingConfig/new}">Добавить отслеживание</a>
+<a th:href="@{/helloPage}">Сменить пользователя</a>
+</body>
+</html>
