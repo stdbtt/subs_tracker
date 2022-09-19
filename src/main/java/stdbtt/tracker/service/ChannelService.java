@@ -32,7 +32,7 @@ public class ChannelService {
         return query.getResultList();
     }
 
-    public Channel addChannel(Channel channel) {
+    public synchronized Channel addChannel(Channel channel) {
         Channel channelWithId = channelRepository.findChannelByName(channel.getName());
         if (channelWithId == null) {
             channelWithId = channelRepository.save(channel);
