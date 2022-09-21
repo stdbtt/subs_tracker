@@ -23,7 +23,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 @Configuration
 @ComponentScan("stdbtt.tracker")
-@EnableJpaRepositories("stdbtt.tracker.repository")
 @PropertySource("classpath:telegram.properties")
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {

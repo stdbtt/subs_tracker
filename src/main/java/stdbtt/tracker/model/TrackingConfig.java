@@ -29,10 +29,15 @@ public class TrackingConfig {
     @OneToMany(mappedBy = "trackingConfig")
     private List<TrackingLap> trackingLaps;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "time_unit")
-    private String timeUnit;
+    private TimeUnitWithMonth timeUnit;
 
     public TrackingConfig() {
+    }
+
+    public TrackingConfig(int trackingConfigId) {
+        this.trackingConfigId = trackingConfigId;
     }
 
     public TrackingConfig(Customer customer, Channel channel, long trackInterval) {
@@ -85,15 +90,15 @@ public class TrackingConfig {
         this.trackingLaps = trackingLaps;
     }
 
-    public String getTimeUnit() {
+    public TimeUnitWithMonth getTimeUnit() {
         return timeUnit;
     }
 
-    public void setTimeUnit(String timeUnit) {
+    public void setTimeUnit(TimeUnitWithMonth timeUnit) {
         this.timeUnit = timeUnit;
     }
 
     public Long getIntervalInSeconds() {
-        return trackInterval * TimeUnitWithMonth.valueOf(timeUnit).getScale();
+        return trackInterval * timeUnit.getScale();
     }
 }

@@ -12,6 +12,8 @@ import stdbtt.tracker.model.Customer;
 import stdbtt.tracker.model.TrackingConfig;
 import stdbtt.tracker.model.TrackingLap;
 
+import java.util.function.Function;
+
 @Component
 public class EntityToDtoUtil {
 
@@ -32,6 +34,13 @@ public class EntityToDtoUtil {
 
     public TrackingConfigDTO convert(TrackingConfig trackingConfig){
         return modelMapper.map(trackingConfig, TrackingConfigDTO.class);
+    }
+
+    public TrackingConfigDTO convert(TrackingConfig trackingConfig, boolean withChannel){
+        TrackingConfigDTO trackingConfigDTO = convert(trackingConfig);
+        if(withChannel)
+            trackingConfigDTO.setChannelDTO(convert(trackingConfig.getChannel()));
+        return trackingConfigDTO;
     }
 
     public TrackingLapDTO convert(TrackingLap trackingLap){

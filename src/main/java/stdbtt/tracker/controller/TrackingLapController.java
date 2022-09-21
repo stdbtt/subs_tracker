@@ -18,6 +18,7 @@ import stdbtt.tracker.util.EntityToDtoUtil;
 import stdbtt.tracker.dto.CustomerDTO;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -50,15 +51,11 @@ public class TrackingLapController {
     }
 
     @GetMapping("/trackingLap/selectStatsParameters")
-    public String chooseTrackingConfigForm(Model model) {
+    public String chooseTrackingConfigForm(Model model){
         Customer customer = dtoToEntityUtil.convert((CustomerDTO) httpSession.getAttribute("customer"));
         List<TrackingConfigDTO> tDtos = trackingConfigService.findTrackingConfigsFetchChannelByCustomerName(customer.getName())
                 .stream()
-                .map(tc -> {
-                    TrackingConfigDTO tDto = entityToDtoUtil.convert(tc);
-                    tDto.setChannelDTO(entityToDtoUtil.convert(tc.getChannel()));
-                    return tDto;
-                })
+                .map(tc -> entityToDtoUtil.convert(tc, true))
                 .collect(Collectors.toList());
         model.addAttribute("trackingConfigs", tDtos);
         model.addAttribute("trackingConfig", new TrackingConfigDTO());

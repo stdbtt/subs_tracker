@@ -8,6 +8,8 @@
 <h4>Выберите канал по которому хотите увидеть статистику</h4>
 <div th:if="${trackingConfigs.isEmpty()}">
     <span>У вас нет каналов которые вы отслеживаете!</span>
+    <br/>
+    <a th:href="@{/trackingConfig/new}">Добавить отслеживание</a>
 </div>
 <div th:if="${!trackingConfigs.isEmpty()}">
     <form th:method="POST" th:action="@{/trackingLap/selectStatsParameters}">
@@ -26,7 +28,7 @@
     </form>
 </div>
 <br/>
-<a th:href="@{/trackingConfig/new}">Добавить отслеживание</a>
+<a th:href="@{/trackingConfig/management}">Управление отслеживаниями</a>
 <a th:href="@{/helloPage}">Сменить пользователя</a>
 </body>
 </html>
