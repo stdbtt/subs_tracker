@@ -1,7 +1,9 @@
 package stdbtt.tracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import stdbtt.tracker.model.Channel;
 import stdbtt.tracker.model.Customer;
 import stdbtt.tracker.model.TrackingConfig;
@@ -42,6 +44,7 @@ public class TrackingConfigService {
         this.entityManager = entityManager;
     }
 
+    @Transactional(rollbackFor = DataAccessException.class)
     public void addTrackingConfig(TrackingConfig trackingConfig) {
         Customer customerWithId = customerService.findCustomerByName(trackingConfig.getCustomer().getName());
         Channel channelWithId = channelService.addChannel(trackingConfig.getChannel());
@@ -63,5 +66,17 @@ public class TrackingConfigService {
         TypedQuery<TrackingConfig> query = entityManager.createQuery("SELECT tc FROM TrackingConfig tc" +
                 " JOIN FETCH tc.channel", TrackingConfig.class);
         return query.getResultList();
+    }
+
+    @Transactional(rollbackFor = DataAccessException.class)
+    public void delete(TrackingConfig trackingConfig) {
+        subsCountTrackingService.stopTracking(trackingConfig);
+        try {
+            trackingConfigRepository.delete(trackingConfig);
+        } catch (DataAccessException e) {
+            TrackingConfig trackingConfigFilled = trackingConfigRepository.findById(trackingConfig.getTrackingConfigId()).get();
+            subsCountTrackingService.startTracking(trackingConfigFilled);
+            throw e;
+        }
     }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление отслеживаниями</title>
+</head>
+<body>
+<h4>Добавьте новое отслеживание или выберите из списка, чтобы изменить</h4>
+<a th:href="@{/trackingConfig/new}">Добавить отслеживание</a>
+<hr/>
+<div th:each="tc : ${trackingConfigs}">
+    <span th:text="${'Имя канала: ' + tc.getChannelDTO().getName() + '. Интервал: '
+        + tc.getTrackInterval() + ' '
+        + tc.getTimeUnit().getName()}"></span>
+    <form th:method="DELETE" th:action="@{/trackingConfig/{id}(id=${tc.getTrackingConfigId()})}">
+        <input type="submit" value="Удалить">
+    </form>
+    <br/>
+</div>
+</body>
+</html>

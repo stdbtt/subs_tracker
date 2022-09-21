@@ -1,5 +1,7 @@
 package stdbtt.tracker.dto;
 
+import stdbtt.tracker.util.TimeUnitWithMonth;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -16,7 +18,7 @@ public class TrackingConfigDTO {
     @Min(value = 1, message = "Интервал должен быть больше нуля.")
     private Long trackInterval;
 
-    private String timeUnit;
+    private TimeUnitWithMonth timeUnit;
 
     private List<TrackingLapDTO> trackingLapDTOs;
 
@@ -67,11 +69,11 @@ public class TrackingConfigDTO {
         this.trackingLapDTOs = trackingLapDTOs;
     }
 
-    public String getTimeUnit() {
+    public TimeUnitWithMonth getTimeUnit() {
         return timeUnit;
     }
 
-    public void setTimeUnit(String timeUnit) {
+    public void setTimeUnit(TimeUnitWithMonth timeUnit) {
         this.timeUnit = timeUnit;
     }
 }

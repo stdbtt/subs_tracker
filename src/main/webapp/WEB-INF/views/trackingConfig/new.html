@@ -15,7 +15,7 @@
     <input type="text" id="trackInterval" th:value="${trackingConfig.trackInterval}" name="trackInterval">
     <label>
         <select th:value="${trackingConfig.timeUnit}" name="timeUnit">
-            <option th:each="time_unit: ${time_units}" th:value="${time_unit.toString()}"
+            <option th:each="time_unit: ${time_units}" th:value="${time_unit}"
                     th:text="${time_unit.getName()}"></option>
         </select>
     </label>

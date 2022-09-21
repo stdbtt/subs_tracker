@@ -37,9 +37,7 @@ public class TrackingConfigValidator {
                     "\nВыберите другой канал.");
     }
 
-    private void validateInterval(Long trackInterval, String timeUnitName, Errors errors) {
-        System.out.println("trackInterval: " + trackInterval);
-        TimeUnitWithMonth timeUnit = TimeUnitWithMonth.valueOf(timeUnitName);
+    private void validateInterval(Long trackInterval, TimeUnitWithMonth timeUnit, Errors errors) {
         if (trackInterval != null && trackInterval > timeUnit.getMaxValue()) {
             errors.rejectValue("trackInterval", "", "Интервал не должен быть больше" +
                     timeUnit.getMaxValue() + " " + timeUnit.getName());

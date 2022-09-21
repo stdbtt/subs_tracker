@@ -10,11 +10,9 @@ import stdbtt.tracker.model.TrackingLap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -40,18 +38,18 @@ public class SubsCountTrackingService {
 
     private ScheduledExecutorService trackingExecutorService;
 
-    private List<ScheduledFuture<?>> requestTasks;
+    private ConcurrentHashMap<Integer, ScheduledFuture<?>> requestTasks;
 
     @PostConstruct
     public void init() {
         trackingExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
-        requestTasks = new ArrayList<>();
+        requestTasks = new ConcurrentHashMap<>();
         requestUrl = apiAddress + botToken + apiMethod;
     }
 
     @PreDestroy
     public void preDestroy() {
-        requestTasks.forEach((t) -> t.cancel(true));
+        requestTasks.values().forEach((t) -> t.cancel(true));
         trackingExecutorService.shutdown();
     }
 
@@ -63,7 +61,13 @@ public class SubsCountTrackingService {
 
     public void startTracking(TrackingConfig trackingConfig) {
         ScheduledFuture<?> requestTask = trackingExecutorService.scheduleAtFixedRate(new SubsCountTrackingRequest(trackingConfig, restTemplate, trackingLapQueue, requestUrl), 0, trackingConfig.getIntervalInSeconds(), SECONDS);
-        requestTasks.add(requestTask);
+        requestTasks.put(trackingConfig.getTrackingConfigId(), requestTask);
     }
 
+    public void stopTracking(TrackingConfig trackingConfig){
+        Integer id = trackingConfig.getTrackingConfigId();
+        ScheduledFuture<?> task = requestTasks.get(id);
+        task.cancel(true);
+        requestTasks.remove(id);
+    }
 }
